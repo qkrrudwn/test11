@@ -116,7 +116,7 @@
 			ssn = document.detailForm.ssn.value;
 			// 유효한 주민번호 형식인 경우만 나이 계산 진행, PortalJuminCheck 함수는 CommonScript.js 의 공통 주민번호 체크 함수임 
 			if(!PortalJuminCheck(ssn)) {
-				alert("잘못된 주민번호입니다.");
+				alert("잘못된 주민번호입니다!.");
 				return false;
 			}
 		}
