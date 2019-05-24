@@ -124,44 +124,41 @@
 			$(self.location).attr("href","/user/getUser?userId=${sessionScope.user.userId}");
 		});
 		
-	 	$(".Depth03:contains('판매상품등록')").on(
+	 	$("a:contains('판매상품등록')").on(
 				"click",
 				function() {
 
-					$(window.parent.frames["rightFrame"].document.location)
+					$(self.location)
 							.attr("href", "/product/addProductView.jsp");
 				});
 
-		$(".Depth03:contains('판매상품관리')").on(
+		$("a:contains('판매상품관리')").on(
 				"click",
 				function() {
 
-					$(window.parent.frames["rightFrame"].document.location)
+					$(self.location)
 							.attr("href", "/product/listProduct?menu=manage");
 				});
-		$(".Depth03:contains('상 품 검 색')").on(
+		$("a:contains('상 품 검 색')").on(
 				"click",
 				function() {
 
-					$(window.parent.frames["rightFrame"].document.location)
+					$(self.location)
 							.attr("href", "/product/listProduct?menu=search");
 				});
-		$(".Depth03:contains('구매이력조회')").on(
+		$("a:contains('구매이력조회')").on(
 				"click",
 				function() {
 
-					$(window.parent.frames["rightFrame"].document.location)
+					$(self.location)
 							.attr("href", "/product/listProduct?menu=search");
 				});
 		
-		$(".Depth03:contains('최근 본 상품')").on(
+		$("a:contains('최근 본 상품')").on(
 				"click",
 				function() {
 
 					history();
 				});
-		
-		
-		
 		
 	</script>  
