@@ -49,7 +49,7 @@ public class ProductController {
 	@RequestMapping( value="addProduct", method=RequestMethod.POST )
 	public String addProduct( @ModelAttribute("product") Product product,Model model,MultipartFile file ) throws Exception {
 	
-		
+		System.out.println("check");
 		
 		if(file.getOriginalFilename() == null) {
 		
