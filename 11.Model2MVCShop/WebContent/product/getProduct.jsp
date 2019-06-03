@@ -5,186 +5,166 @@
 
 <html>
 <head>
-<link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <script type="text/javascript" src="../javascript/calendar.js"></script>
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script type="text/javascript">
-	function fncGetList() {
+<link
+	href="https://fonts.googleapis.com/css?family=Stylish&display=swap"
+	rel="stylesheet">
 
-		$("form").attr("method", "GET").attr("action",
-				"/product/productView1?prodNo").submit();
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/css/admin.css" type="text/css">
+<link href="/css/animate.min.css" rel="stylesheet">
+<link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="/javascript/bootstrap-dropdownhover.min.js"></script>
+
+<style>
+body>div.container {
+	border: 3px solid #D6CDB7;
+	margin-top: 10px;
+}
+</style>
+<script>
+/* 	function fncAddpurchaseView(prodNo) {
+	var url = "/purchase/addPurchaseView?prodNo="+prodNo;
+		self.location=url;
 	}
+	 */
+	function fncAddpurchaseView() {
+		$("form").attr("method", "GET").attr("action","/purchase/addPurchaseView").submit();
+		}
 
 	$(function() {
 
-		$("td.ct_btn01:contains('구매')").on("click", function() {
-
-			fncGetList();
+		$("button.btn.btn-primary").on("click", function() {
+		
+		var prodNo=$(event.target).parent().children('div').text().trim();
+		
+		fncAddpurchaseView();
 		});
 
-		$("td.ct_btn01:contains('이전')").on("click", function() {
-
-			history.go(-1);
+		$(function() {
+			$("a[href='#']").on("click", function() {
+				history.go(-1);
+			});
 		});
+		
+		
+		
 	});
 </script>
 
 
 <title>Insert title here</title>
 
-<style type="text/css">
-<style type="text/css">
-h1, h2, h3, h4, h5, h6, p, li, a, td {
-	font-family: 'Stylish', sans-serif
+
+<style>
+body {
+	padding-top: 70px;
 }
 </style>
-</style>
+
+
+
+
+
+
 </head>
+<body  bgcolor="#ffffff" text="#000000" >
+<!-- <body bgcolor="#ffffff" text="#000000" > -->
+<jsp:include page="/layout/toolbar.jsp" />
+<div class="container">
+	
+		<div class="page-header text-center">
+	       <h3 class=" text-info">상품상세조회</h3>
+	    </div>
+	    
 
-<body bgcolor="#ffffff" text="#000000">
+	    
+	    
+  
+	    <!-- form Start /////////////////////////////////////-->
+		<form class="form-horizontal" name="detailForm" >
+		
+		  <div class="form-group">
+		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">상품번호</label>
+		    <div class="col-sm-4">
+		       <span id="helpBlock" class="help-block">
+		       ${product.getProdNo() }
+		      </span>
+		    </div>
+		  </div>
+		
+		  <div class="form-group">
+		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">상품명</label>
+		    <div class="col-sm-4">
+		      ${product.getProdName() }
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">수량</label>
+		    <div class="col-sm-4">
+		      ${product.getProductCNT() }
+		    </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="password2" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
+		
+		    <div class="col-sm-4">
+		    <span> <img src="/images/uploadFiles/${product.getFileName()}"/></span>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">상품상세정보</label>
+		    <div class="col-sm-4">
+		    ${product.getProdDetail() }
+		    </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">제조일자</label>
+		    <div class="col-sm-4">
+		     ${product.getManuDate() }
+		    </div>
+		    </div>
+		     <div class="form-group">
+		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">가격</label>
+		    <div class="col-sm-4">
+		      ${product.getPrice() }
+		    </div>
+		    </div>
+		     <div class="form-group">
+		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">등록일자</label>
+		    <div class="col-sm-4">
+		      ${product.getRegDate() }
 
-	<form name="detailForm" method="post">
+		    </div>
+		    
+		  </div>
+		  
+		  <div class="form-group">
+		    <div class="col-sm-offset-4  col-sm-4 text-center">
+		  
+		      <button type="button" class="btn btn-primary"  >구 &nbsp;매</button>
+		      <input type="hidden" id="prodNo"  value= "${product.getProdNo()}"  name="prodNo">
+								
+								
+			  <a class="btn btn-primary btn" href="#" role="button">이전</a>
+		    </div>
+		  </div>
+		</form>
 
-		<table width="100%" height="37" border="0" cellpadding="0"
-			cellspacing="0">
-			<tr>
-				<td width="15" height="37"><img src="/images/ct_ttl_img01.gif"
-					width="15" height="37"></td>
-				<td background="/images/ct_ttl_img02.gif" width="100%"
-					style="padding-left: 10px;">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-						<tr>
-							<td width="93%" class="ct_ttl01">상품상세조회</td>
-							<td width="20%" align="right">&nbsp;</td>
-						</tr>
-					</table>
-				</td>
-				<td width="12" height="37"><img src="/images/ct_ttl_img03.gif"
-					width="12" height="37" /></td>
-			</tr>
-		</table>
-
-		<table width="100%" border="0" cellspacing="0" cellpadding="0"
-			style="margin-top: 13px;">
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-			<tr>
-				<td width="104" class="ct_write">상품번호 <img
-					src="/images/ct_icon_red.gif" width="3" height="3"
-					align="absmiddle" />
-				</td>
-				<td bgcolor="D6D6D6" width="1"></td>
-				<td class="ct_write01">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-						<tr>
-							<td width="105">${product.prodNo}</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-			<tr>
-				<td width="104" class="ct_write">상품명 <img
-					src="/images/ct_icon_red.gif" width="3" height="3"
-					align="absmiddle" />
-				</td>
-				<td bgcolor="D6D6D6" width="1"></td>
-				<td class="ct_write01">${product.prodName }</td>
-			</tr>
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-			<tr>
-				<td width="104" class="ct_write">상품이미지 <img
-					src="/images/ct_icon_red.gif" width="3" height="3"
-					align="absmiddle" />
-				</td>
-				<td bgcolor="D6D6D6" width="1"></td>
-				<td class="ct_write01">
-					<img src = "/images/uploadFiles/${product.getFileName()}"/></td>
-			</tr>
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-			<tr>
-				<td width="104" class="ct_write">상품상세정보 <img
-					src="/images/ct_icon_red.gif" width="3" height="3"
-					align="absmiddle" />
-				</td>
-				<td bgcolor="D6D6D6" width="1"></td>
-				<td class="ct_write01">${product.prodDetail }</td>
-			</tr>
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-			<tr>
-				<td width="104" class="ct_write">제조일자</td>
-				<td bgcolor="D6D6D6" width="1"></td>
-				<td class="ct_write01">${product.manuDate }</td>
-			</tr>
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-			<tr>
-				<td width="104" class="ct_write">가격</td>
-				<td bgcolor="D6D6D6" width="1"></td>
-				<td class="ct_write01">${product.price }</td>
-			</tr>
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-			<tr>
-				<td width="104" class="ct_write">등록일자</td>
-				<td bgcolor="D6D6D6" width="1"></td>
-				<td class="ct_write01">${product.regDate }</td>
-			</tr>
-			<tr>
-				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-			</tr>
-		</table>
-
-		<table width="100%" border="0" cellspacing="0" cellpadding="0"
-			style="margin-top: 10px;">
-			<tr>
-				<td width="53%"></td>
-				<td align="right">
-
-					<table border="0" cellspacing="0" cellpadding="0">
-						<tr>
-
-							<td width="17" height="23"><img src="/images/ct_btnbg01.gif"
-								width="17" height="23" /></td>
-							<td background="/images/ct_btnbg02.gif" class="ct_btn01"
-								style="padding-top: 3px;">
-								<%-- 					<a href="/purchase/addPurchaseView?prodNo=${product.getProdNo() }">구매</a> --%>
-								<div id="producvalue" style="display: none">
-									구매 ${product.getProdNo()} 
-								</div> 
-								구매
-							</td>
-							<td width="14" height="23"><img src="/images/ct_btnbg03.gif"
-								width="14" height="23"></td>
-							<td width="30"></td>
-
-							<td width="17" height="23"><img src="/images/ct_btnbg01.gif"
-								width="17" height="23" /></td>
-							<td background="/images/ct_btnbg02.gif" class="ct_btn01"
-								style="padding-top: 3px;">
-								<!-- 					<a href="javascript:history.go(-1)">이전</a> --> 이전
-							</td>
-							<td width="14" height="23"><img src="/images/ct_btnbg03.gif"
-								width="14" height="23"></td>
-						</tr>
-					</table>
-
-				</td>
-			</tr>
-		</table>
-	</form>
+ 	</div>
 
 </body>
 </html>

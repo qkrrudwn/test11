@@ -38,7 +38,7 @@ body>div.container {
 
 	function fncAddProduct() {
 		//Form 유효성 검증
-		alert("check::")
+	
 // 		var name = document.detailForm.prodName.value;
 // 		var detail = document.detailForm.prodDetail.value;
 // 		var manuDate = document.detailForm.manuDate.value;
@@ -72,7 +72,7 @@ body>div.container {
 	});
 
 	$(function() {
-		$("button.btn.btn-primary").on("click", function() {
+		$("a[href='#']").on("click", function() {
 			$("form")[0].reset();
 		});
 	});
@@ -122,7 +122,7 @@ body {
 		  <div class="form-group">
 		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">상품상세정보</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="password" name="detail" >
+		      <input type="text" class="form-control" id="password" name="prodDetail" >
 		    </div>
 		  </div>
 		  
@@ -135,14 +135,7 @@ body {
 		      <input type="text" class="form-control" name="manuDate" readonly="readonly" maxLength="10" minLength="6"  />
 		    	&nbsp;<img src="../images/ct_icon_date.gif" width="20" height="20"
 					onclick="show_calendar('document.detailForm.manuDate'	, document.detailForm.manuDate.value)" />
-					
-					
-<!-- 		   <input type="text" name="manuDate" -->
-<!-- 					readonly="readonly" class="ct_input_g" -->
-<!-- 					style="width: 100px; height: 19px" maxLength="10" minLength="6" /> -->
-<!-- 					&nbsp;<img src="../images/ct_icon_date.gif" width="15" height="15" -->
-<!-- 					onclick="show_calendar('document.detailForm.manuDate'	, document.detailForm.manuDate.value)" /> -->
-		   
+					   
 		    </div>
 		    
 		    
@@ -152,19 +145,27 @@ body {
 		  <div class="form-group">
 		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">가격</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="price" name="userName" >
+		      <input type="text" class="form-control" id="price" name="price" >
 		    </div>
 		  </div>
+		  
+		   <div class="form-group">
+		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">수량</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" id="price" name="productCNT" >
+		    </div>
+		  </div>
+		  
 		  
 		  <div class="form-group">
 		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 		    <div class="col-sm-4">
 		        <span> <input type="file" class="form-control" id="file" name="file"  ></span>
 		    </div>
-		 
-		    
-		    
 		  </div>
+		  
+		   
+		  
 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">

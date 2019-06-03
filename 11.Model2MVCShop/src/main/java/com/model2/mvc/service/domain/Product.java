@@ -13,7 +13,8 @@ public class Product {
 	private int prodNo;
 	private Date regDate;
 	private String proTranCode;
-	
+	private int productCNT;
+	private int tranNo;
 	
 	public Product(){
 	}
@@ -67,12 +68,31 @@ public class Product {
 		this.regDate = regDate;
 	}
 
+	public int getProductCNT() {
+		return productCNT;
+	}
+
+	public void setProductCNT(int productCNT) {
+		this.productCNT = productCNT;
+	}
+
+	public int getTranNo() {
+		return tranNo;
+	}
+
+	public void setTranNo(int tranNo) {
+		this.tranNo = tranNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [fileName=" + fileName + ", manuDate=" + manuDate + ", price=" + price + ", prodDetail="
 				+ prodDetail + ", prodName=" + prodName + ", prodNo=" + prodNo + ", regDate=" + regDate
-				+ ", proTranCode=" + proTranCode + "]";
+				+ ", proTranCode=" + proTranCode + ", productCNT=" + productCNT + ", tranNo=" + tranNo + "]";
 	}
+
+	
+	
 
 
 	

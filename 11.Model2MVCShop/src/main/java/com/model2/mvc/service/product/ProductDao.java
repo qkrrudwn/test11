@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
+import com.model2.mvc.service.domain.Purchase;
 
 
 public interface ProductDao {
@@ -15,8 +16,11 @@ public interface ProductDao {
 		// SELECT ONE
 		public Product getProduct(int prodNo) throws Exception ;
 
-		// SELECT LIST
-		public List<Product> getProductList(Search search) throws Exception ;
+		
+		public List<Product> getProductListManage(Search search) throws Exception ;
+		
+		public List<Product> getProductListSearch(Search search) throws Exception ;
+		
 
 		// UPDATE
 		public void updateProduct(Product product) throws Exception ;
@@ -25,5 +29,7 @@ public interface ProductDao {
 		public int getTotalCount(Search search) throws Exception ;
 		
 		public List<String> productGetName() throws Exception;
+		
+		public void updateCnt(Purchase purchase) throws Exception;
 
 }

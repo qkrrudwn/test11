@@ -7,7 +7,7 @@
 
 <mapper namespace="ProductMapper">
 
-	<resultMap id="productSelectMap" type="product"> <!-- 테이블 컬럼명 -->
+	<resultMap id="productSelectMap" type="product"> 
 		<result property="fileName" column="IMAGE_FILE"
 			jdbcType="VARCHAR" />
 		<result property="manuDate" column="MANUFACTURE_DAY"
@@ -21,13 +21,15 @@
 		<result property="regDate" column="REG_DATE" jdbcType="DATE" />
 		<result property="proTranCode" column="tran_status_code"
 			jdbcType="VARCHAR" />
-	</resultMap><!-- product필드 -->
+		<result property="productCNT" column="productCNT" jdbcType="INTEGER"/>
+		<result property="tranNo" column="TRAN_NO" jdbcType="INTEGER"/>
+	</resultMap>
 
 
 	<insert id="addProduct" parameterType="product">
 		INSERT
 		INTO product( IMAGE_FILE , MANUFACTURE_DAY , PRICE , PROD_DETAIL ,
-		PROD_NAME, PROD_NO , REG_DATE) <!-- 테이블컬럼병 -->
+		PROD_NAME, PROD_NO , REG_DATE,PRODUCTCNT) <!-- 테이블컬럼병 -->
 		VALUES ( 
 		#{fileName:VARCHAR} ,
 		 #{manuDate:VARCHAR} ,
@@ -35,7 +37,9 @@
 		   #{prodDetail:VARCHAR} ,
 		#{prodName:VARCHAR} ,
 		 seq_product_prod_no.nextval ,
-		  SYSDATE )
+		  SYSDATE,
+		  #{productCNT:INTEGER}
+		   )
 	</insert>
 
 
@@ -43,7 +47,7 @@
 		resultMap="productSelectMap">
 		SELECT
 		IMAGE_FILE , MANUFACTURE_DAY , PRICE , PROD_DETAIL , PROD_NAME ,
-		PROD_NO , REG_DATE 	<!-- 테이블컬럼병 -->
+		PROD_NO , REG_DATE ,PRODUCTCNT	<!-- 테이블컬럼병 -->
 		FROM product
 		WHERE PROD_NO = #{value}
 	</select>
@@ -62,19 +66,30 @@
 		<set>
 			PROD_NAME = #{prodName} ,
 			PROD_DETAIL = #{prodDetail},
-			MANUFACTURE_DAY =
-			#{manuDate} ,
+			MANUFACTURE_DAY = #{manuDate} ,
 			PRICE = #{price} ,
-			IMAGE_FILE = #{fileName}
+			IMAGE_FILE = #{fileName},
+			PRODUCTCNT = #{productCNT}
 		</set>
 		WHERE PROD_NO = #{prodNo}
 	</update>
+	
+	<update id="updateCnt" parameterType="purchase">
+		UPDATE product
+		<set>
+			productCNT = productCNT - #{purchaseCNT:INTEGER} 
+		</set>
+		WHERE PROD_NO = #{purchaseProd.prodNo}
+	</update>
+	
+	
+	
 
 
-	<select id="getProductList" parameterType="search" resultMap="productSelectMap">
+	<select id="getProductListManage" parameterType="search" resultMap="productSelectMap">
    SELECT *
    FROM ( SELECT inner_table.* , ROWNUM AS row_seq 
-      FROM  (SELECT  product.* , transaction.tran_status_code
+      FROM  (SELECT  product.* , transaction.tran_status_code,tran_no
           FROM product JOIN transaction ON product.prod_no = transaction.prod_no(+) 
           <if test="searchCondition != null">           
            <where>
@@ -96,11 +111,46 @@
          WHERE ROWNUM &lt; = #{endRowNum} )
         WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
   </select> 
+  
+  
+  <select id="getProductListSearch" parameterType="search" resultMap="productSelectMap">
+   SELECT *
+   FROM ( SELECT inner_table.* , ROWNUM AS row_seq 
+      FROM  (SELECT  * 
+          FROM product 
+          <if test="searchCondition != null">           
+           <where>
+            <choose>
+             <when test="searchCondition == 0 and searchKeyword != '' ">             
+             product.prod_no = #{searchKeyword}
+             </when>
+             <when test="searchCondition == 1 and searchKeyword != '' ">            
+             product.prod_name LIKE '%'||#{searchKeyword}||'%'
+             </when>
+             <otherwise>
+             product.price LIKE '%'||#{searchKeyword}||'%'
+             </otherwise>
+            </choose>            
+           </where>
+          </if>
+          
+          ORDER BY product.prod_no ) inner_table
+         WHERE ROWNUM &lt; = #{endRowNum} )
+        WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+  </select> 
+  
+  
+  
+  
+  
+  
+  
+  
 
 	<select id="getTotalCount" parameterType="search"
 		resultType="int">
 		SELECT COUNT(*)
-		FROM(SELECT  product.* , transaction.tran_status_code
+		FROM(SELECT distinct product.* , transaction.tran_status_code
           FROM product JOIN transaction ON product.prod_no = transaction.prod_no(+) 
           <if test="searchCondition != null">           
            <where>
