@@ -39,15 +39,15 @@ body>div.container {
 $(function() {
 	//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 	//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-	 $( "td.ct_btn01:contains('확인')" ).on("click" , function() {
+	 $( "button.btn.btn-primary" ).on("click" , function() {
 		//Debug..
 		//alert(  $( "td.ct_btn01:contains('확인')" ).html() );
 		 self.location = "/product/listProduct?menu=manage"
 	});
 	
-	 $( "td.ct_btn01:contains('추가등록')" ).on("click" , function() {
-			//Debug..
-			//alert(  $( "td.ct_btn01:contains('수정')" ).html() );
+	 $( "a[href='#']" ).on("click" , function() {
+			
+			//alert("클릭" );
 			self.location = "/product/addProductView.jsp"
 		});
 });
@@ -85,7 +85,7 @@ body {
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">상 품 명</label>
 		    <div class="col-sm-4">
 		       <span id="helpBlock" class="help-block">
-		       ${product.prodName }
+		       ${product.getProdName() }
 		      </span>
 		    </div>
 		  </div>
@@ -93,7 +93,7 @@ body {
 		  <div class="form-group">
 		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">상품상세정보</label>
 		    <div class="col-sm-4">
-		      ${product.prodDetail }
+		      ${product.getProdDetail() }
 		    </div>
 		  </div>
 		  
@@ -101,21 +101,21 @@ body {
 		    <label for="password2" class="col-sm-offset-1 col-sm-3 control-label">제조일자</label>
 		
 		    <div class="col-sm-4">
-		     ${product.manuDate }
+		     ${product.getManuDate() }
 		    </div>
 		  </div>
 		  
 		  <div class="form-group">
 		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">가격</label>
 		    <div class="col-sm-4">
-		      ${product.price }
+		      ${product.getPrice() }
 		    </div>
 		  </div>
 		  
 		  <div class="form-group">
 		    <label for="ssn" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 		    <div class="col-sm-4">
-		        <span> <img src="/images/uploadFiles/${product.getFileName()}"/></span>
+		        <span> <img src="../images/uploadFiles/${product.getFileName()}"/></span>
 		    </div>
 		 
 		    
@@ -124,8 +124,8 @@ body {
 		  
 		  <div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >등 &nbsp;록</button>
-			  <a class="btn btn-primary btn" href="#" role="button">취 &nbsp;소</a>
+		      <button type="button" class="btn btn-primary"  >확 &nbsp;인</button>
+			  <a class="btn btn-primary btn" href="#" role="button">추가등록</a>
 		    </div>
 		  </div>
 		</form>

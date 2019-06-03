@@ -2,6 +2,7 @@ package com.model2.mvc.web.product;
 
 import java.io.File;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,41 +43,46 @@ public class ProductController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 
-	private static final String uploadpath = "C:\\Users\\roskk\\eclipse-workspace\\10.Model2MVCShop(Ajax)\\WebContent\\images\\uploadFiles";
-	
-	
-	
+	private static final String uploadpath = "C:\\Users\\roskk\\git\\test11\\11.Model2MVCShop\\WebContent\\images\\uploadFiles";
+
+
+
 	@RequestMapping( value="addProduct", method=RequestMethod.POST )
-	public String addProduct( @ModelAttribute("product") Product product,Model model,MultipartFile file ) throws Exception {
+	public String addProduct( @ModelAttribute("product") Product product,Model model, MultipartFile file ) throws Exception {
+
+		// 파일이 있으면 if문 안으로
+		if(file.getOriginalFilename() != null) {
+			//파일객체를 읽을 수 있도록 하는거
+			File fileName = new File(uploadpath,file.getOriginalFilename());
+			try {//request한 파일을 객에파일에 변환
+				file.transferTo(fileName); 
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+
 	
-		System.out.println("check2");
+//			int productCNT = 10;
+//			
+//			productCNT = productCNT - product.getProductCNT();
 		
-		if(file.getOriginalFilename() == null) {
-		
-		File fileName = new File(uploadpath,file.getOriginalFilename());
-		try {
-	        file.transferTo(fileName); 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null;
-	    }
-		
-		product.setFileName(file.getOriginalFilename());
+			product.setFileName(file.getOriginalFilename());
 		}
-		
-		
+
+		System.out.println("product toString :: " + product);
+
 		productService.addProduct(product);
-		
+
 		model.addAttribute("product", product);
-		
+
 		return "forward:/product/addProductView1.jsp";
 	}
 
 	@RequestMapping( value="getProduct", method=RequestMethod.GET )
-	public String getProduct(@RequestParam("prodNo") int prodNo, Model model, HttpServletRequest request) throws Exception {
+	public String getProduct(@RequestParam("prodNo") int prodNo,@RequestParam("menu") String menu, Model model, HttpServletRequest request) throws Exception {
 
 		Product product = productService.getProduct(prodNo);
-
+		System.out.println("menu:::" + menu);
 		model.addAttribute("product", product);
 
 		if ("manage".equals(request.getParameter("menu"))) {
@@ -84,43 +90,56 @@ public class ProductController {
 		}
 		return "forward:/product/getProduct.jsp";
 	}
-	
-	@RequestMapping(value="listProduct")
-	public String listProduct(@ModelAttribute("search") Search search ,Model model, HttpServletRequest request) throws Exception {
 
-		
-		System.out.println("=================");
+	@RequestMapping(value="listProduct")
+	public String listProduct(@ModelAttribute("search") Search search ,Model model, HttpServletRequest request,@RequestParam("menu") String menu) throws Exception {
+
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
-
-		System.out.println("==========================");
-		Map<String , Object> map=productService.getProductList(search);            					
+		System.out.println("menu check :::" + menu);
+		Map<String , Object> map=productService.getProductList(search,menu);            					
 
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 
 		model.addAttribute("list", map.get("list"));											
 		model.addAttribute("resultPage", resultPage);											
 		model.addAttribute("search", search);		
-		
-		System.out.println("map.get(\"list\") ::::::::::::::::::::::::: "  +  map.get("list"));
-		System.out.println("============================");
 
-		
+		System.out.println("map.get(\"list\") ::::::::::::::::::::::::: "  +  map.get("list"));
 
 		return "forward:/product/listProduct.jsp";													
 	}
-	
+
 	@RequestMapping( value="UpdateProduct", method=RequestMethod.POST )
-	public String UpdateProduct( @ModelAttribute("product") Product product , Model model , HttpSession session) throws Exception{
-			System.out.println("check :::::::");
-			productService.updateProduct(product);
-			System.out.println("check ::::");
-			return "forward:/product/getProduct.jsp";
+	public String UpdateProduct( @ModelAttribute("product") Product product , Model model , HttpSession session, MultipartFile file) throws Exception{
 
 
 
+		// 파일이 있으면 if문 안으로
+		if(file.getOriginalFilename() != null) {
+			//파일객체를 읽을 수 있도록 하는거
+			File fileName = new File(uploadpath,file.getOriginalFilename());
+			try {//request한 파일을 객에파일에 변환
+				file.transferTo(fileName); 
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+
+			product.setFileName(file.getOriginalFilename());
 		}
+		productService.updateProduct(product);
+		product =	productService.getProduct(product.getProdNo());
+
+
+		model.addAttribute("product", product);
+
+		return "forward:/product/getProduct.jsp";
+
+
 
 	}
+
+}

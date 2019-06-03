@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
+import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.product.ProductDao;
 
 
@@ -43,8 +44,14 @@ public class ProductDaoImpl implements ProductDao{
 		sqlSession.update("ProductMapper.updateProduct", product);
 	}
 
-	public List<Product> getProductList(Search search) throws Exception {
-		return sqlSession.selectList("ProductMapper.getProductList", search);
+	public List<Product> getProductListManage(Search search) throws Exception {
+		System.out.println("getProductListManage check :::");
+		return sqlSession.selectList("ProductMapper.getProductListManage", search);
+	}
+	
+	public List<Product> getProductListSearch(Search search) throws Exception {
+		System.out.println("getProductListSearch check :::");
+		return sqlSession.selectList("ProductMapper.getProductListSearch", search);
 	}
 
 	// �Խ��� Page ó���� ���� ��ü Row(totalCount)  return
@@ -55,4 +62,8 @@ public class ProductDaoImpl implements ProductDao{
 	public List<String> productGetName() throws Exception {
 		return sqlSession.selectList("ProductMapper.productGetName");
 	}
+	public void updateCnt(Purchase purchase) throws Exception {
+		sqlSession.update("ProductMapper.updateCnt", purchase);
+	}
+	
 }
